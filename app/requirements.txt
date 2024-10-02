@@ -1,0 +1,15 @@
+authlib
+fastapi
+uvicorn
+jinja2
+passlib[bcrypt]
+python-jose[cryptography]
+sqlalchemy
+asyncpg
+alembic
+psycopg2-binary
+python-multipart
+httpx
+Faker
+itsdangerous
+python-dotenv
