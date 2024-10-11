@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.requests import Request
+from fastapi.staticfiles import StaticFiles
 from starlette.responses import RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 from database import get_db
@@ -17,6 +18,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 # load_dotenv()
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
+# Mount the static files directory
+app.mount("/static", StaticFiles(directory="static"), name="static")
 # Template rendering
 # templates = Jinja2Templates(directory="templates")
 app.include_router(router)
