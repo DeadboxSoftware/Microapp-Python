@@ -9,7 +9,7 @@ faker = Faker()
 async def create_user_from_email(
     db: AsyncSession, 
     email=None, 
-    username=None, 
+    username="", 
     password=None,
     full_name=""
     ):
@@ -26,6 +26,8 @@ async def create_user_from_email(
     await db.commit()
     await db.refresh(user)
     return user
+
+create_user=create_user_from_email
 
 
 async def authorize_user(db: AsyncSession, username: str, password: str) -> User:

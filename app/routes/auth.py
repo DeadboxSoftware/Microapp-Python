@@ -21,6 +21,7 @@ import httpx
 # MISC imports
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
+from templates import templates
 
 SECRET_KEY = os.getenv("APP_SECRET_KEY")
 ALGORITHM = "HS256"
@@ -29,9 +30,6 @@ load_dotenv()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = APIRouter()
-
-# Template rendering
-templates = Jinja2Templates(directory="templates")
 
 # Pydantic models
 class Token(BaseModel):
