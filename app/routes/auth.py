@@ -66,7 +66,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 @app.get("/", response_class=HTMLResponse)
 async def login_page(request: Request, error: str = None):
-    return templates.TemplateResponse("login.html", {"request": request, "error": error})
+    return templates.TemplateResponse("auth/login.html", {"request": request, "error": error})
 
 
 @app.post("/login", response_class=HTMLResponse)
@@ -79,7 +79,7 @@ async def login_for_access_token(
     from controllers.user import authorize_user
     user = await authorize_user(db, username, password)
     if not user:
-        return templates.TemplateResponse("login.html", {"request": request, "error": "Invalid credentials"})
+        return templates.TemplateResponse("auth/login.html", {"request": request, "error": "Invalid credentials"})
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
@@ -91,7 +91,7 @@ async def login_for_access_token(
 
 @app.get("/register", response_class=HTMLResponse)
 async def get_register(request: Request):
-    return templates.TemplateResponse("register.html", {"request": request})
+    return templates.TemplateResponse("auth/register.html", {"request": request})
 
 @app.post("/register", response_class=HTMLResponse)
 async def register_user(
