@@ -4,46 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="/static/styles.css"> <!-- Link to your CSS if any -->
+    <link rel="stylesheet" href="/static/materialui/css/materialize.min.css"> <!-- Link to Materialize CSS -->
+    <link rel="stylesheet" href="/static/materialui/css/material-extra.css"> <!-- Custom styles if any -->
 </head>
-<body>
+<body class="grey lighten-4">
+
+    <!-- Container for the registration card -->
     <div class="container">
-        <h2>Register</h2>
-        
-        <!-- Display error message if registration fails -->
-        {% if error %}
-            <div class="error-message">
-                <p>{{ error }}</p>
-            </div>
-        {% endif %}
-        
-        <form method="post" action="/register">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
+        <div class="row">
+            <div class="col s12 m8 offset-m2 l6 offset-l3">
+                <!-- Card for registration form -->
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title center">Register</span>
+                        
+                        <!-- Display error message if registration fails -->
+                        {% if error %}
+                            <div class="card-panel red lighten-2 white-text">
+                                <p>{{ error }}</p>
+                            </div>
+                        {% endif %}
 
-            <div class="form-group">
-                <label for="full_name">Full Name</label>
-                <input type="text" id="full_name" name="full_name" required>
-            </div>
+                        <!-- Registration Form -->
+                        <form method="post" action="/register">
+                            <!-- Username field -->
+                            <div class="input-field">
+                                <input type="text" id="username" name="username" required>
+                                <label for="username">Username</label>
+                            </div>
 
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
+                            <!-- Full Name field -->
+                            <div class="input-field">
+                                <input type="text" id="full_name" name="full_name" required>
+                                <label for="full_name">Full Name</label>
+                            </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
+                            <!-- Email field -->
+                            <div class="input-field">
+                                <input type="email" id="email" name="email" required>
+                                <label for="email">Email</label>
+                            </div>
 
-            <div class="form-group">
-                <button type="submit">Register</button>
-            </div>
-        </form>
+                            <!-- Password field -->
+                            <div class="input-field">
+                                <input type="password" id="password" name="password" required>
+                                <label for="password">Password</label>
+                            </div>
 
-        <p>Already have an account? <a href="/login">Login here</a>.</p>
+                            <!-- Submit Button -->
+                            <div class="center">
+                                <button type="submit" class="btn waves-effect waves-light blue">Register</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Card action for login link -->
+                    <div class="card-action center">
+                        <p>Already have an account? <a href="/">Login here</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Materialize JavaScript -->
+    <script src="/static/materialui/js/materialize.min.js"></script>
 </body>
 </html>
