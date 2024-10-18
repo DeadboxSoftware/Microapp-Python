@@ -48,6 +48,8 @@ class User(BaseModel):
 class UserInDB(User):
     hashed_password: str
 
+# ---------------- JWT
+
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     try:
         to_encode = data
@@ -61,6 +63,26 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=400, detail="Inactive user")
+
+
+# Function to decode a JWT token, without any specific checks for access tokens
+def decode_jwt(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        raise HTTPException(
+            status_code=HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except Exception as e:
+        print(e)
+        raise HTTPException(
+            status_code=HTTP_401_UNAUTHORIZED,
+            detail="Token decoding failed",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 # ---------------- CORE Login
 
@@ -159,7 +181,7 @@ async def callback(request: Request, response: Response, db: AsyncSession = Depe
             avatar_url = f"https://cdn.discordapp.com/avatars/{discord_id}/{user_data['avatar']}.png"
             user = await get_or_create_user(db, discord_id, username, email, avatar_url, token)
             print(f"User info: {user_data}")
-            ACCESS_TOKEN_EXPIRE_MINUTES = 1440
+            ACCESS_TOKEN_EXPIRE_MINUTES = 1440 # 1 day
             access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
             print(access_token_expires)
             print(token["access_token"])
@@ -175,12 +197,25 @@ async def callback(request: Request, response: Response, db: AsyncSession = Depe
         print(f"Error during callback: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
-# ---------------- MISC
+# RECEIVES ACCESS TOKEN FOR USER USING AUTHORIZATION (NOT WORKING CURRENTLY USING COOKIE INSTEAD) 
+# @app.post("/token")
+# async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+#     print("testing")
+#     user = {"username": "oauth_user"}
+#     if not user:
+#         raise HTTPException(
+#             status_code=400,
+#             detail="Incorrect username or password",
+#             headers={"WWW-Authenticate": "Bearer"},
+#         )
+    
+#     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+#     access_token = create_access_token(
+#         data={"sub": user["username"]}, expires_delta=access_token_expires
+#     )
+#     return {"access_token": access_token, "token_type": "bearer"}
 
-@app.get("/users/me", response_class=HTMLResponse)
-async def read_users_me(request: Request, token: str = Depends(oauth2_scheme)):
-    user = await get_current_user(token)
-    return templates.TemplateResponse("user.html", {"request": request, "user": user})
+# ---------------- MISC
 
 async def send_message_to_discord_channel(token, channel_id, message):
     headers = {

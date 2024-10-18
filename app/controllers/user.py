@@ -57,3 +57,17 @@ async def create_fake_user(db: AsyncSession, user, password):
     await db.commit()
     await db.refresh(fake_user)
     return fake_user
+
+
+async def get_current_user(db: AsyncSession, token):
+    from models import User
+    # TODO -> DECODE JWT TOKEN
+    from routes.auth import decode_jwt
+    token = decode_jwt(token)['sub']
+    print(f"token: {token}")
+    result = await db.execute(
+        select(User).where(User.access_token == token)
+    )
+    user = result.scalars().first()
+    user_dict = {column.name: getattr(user, column.name) for column in User.__table__.columns}
+    return user_dict
