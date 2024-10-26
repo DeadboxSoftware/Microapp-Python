@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>User Page</title>
-</head>
-<body>
-    <h2>Welcome, {{ user.username }}!</h2>
-    <p>Full Name: {{ user.full_name }}</p>
-    <p>Email: {{ user.email }}</p>
-    <a href="/">Logout</a>
-</body>
-</html>
+{% extends "skins/material_app.html" %}
+
+{% block content %}
+
+<h2>Welcome, {{ user.username }}!</h2>
+<p>Full Name: {{ user.full_name }}</p>
+<p>Email: {{ user.email }}</p>
+<a href="/">Logout</a>
+
+{% endblock %}

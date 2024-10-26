@@ -24,7 +24,7 @@ async def login_page(request: Request, error: str = None):
 
 
 @app.get(
-    "/users/me", 
+    "/user", 
     response_class=HTMLResponse
 )
 async def read_users_me(request: Request, db: AsyncSession = Depends(get_db)):

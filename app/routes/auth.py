@@ -106,7 +106,7 @@ async def login_for_access_token(
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    response = RedirectResponse("/users/me", status_code=status.HTTP_302_FOUND)
+    response = RedirectResponse("/user", status_code=status.HTTP_302_FOUND)
     response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True)
     return response
 
